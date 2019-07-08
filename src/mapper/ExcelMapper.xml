@@ -94,12 +94,12 @@
 	<!-- 根据 Excel ID 查询 Excel内容, 获取需要的Total -->
 	<select id="selectExcelAllTotal" resultType="com.dave.entity.ExcelTotal">
 		select 
-		sum(IN_CALL_ANSWER) as inCallAnswerTotal
-		, sum(IN_AVERAGE_HOLDING_TPC) as inAverageHoldingTPCTotal
-		, sum(OUT_CALL_ANSWER) as outCallAnswerTotal
-		, sum(OUT_AVERAGE_HOLDING_TPC) as outAverageHoldingTPCTotal
-		, sum(SERVICE_CAPACITY) as serviceCapacityTotal
-		, sum(CAPACITY_NEEDED) as capacityNeededTotal
+		round(sum(IN_CALL_ANSWER), 2) as inCallAnswerTotal
+		, round(sum(IN_AVERAGE_HOLDING_TPC), 2) as inAverageHoldingTPCTotal
+		, round(sum(OUT_CALL_ANSWER), 2) as outCallAnswerTotal
+		, round(sum(OUT_AVERAGE_HOLDING_TPC), 2) as outAverageHoldingTPCTotal
+		, round(sum(SERVICE_CAPACITY), 2) as serviceCapacityTotal
+		, round(sum(CAPACITY_NEEDED), 2) as capacityNeededTotal
 		from EXCEL_REPORT_ALL where EXCEL_ID = #{excelId}
 	</select>
 	<!-- 根据名称查询所有 Excel -->
@@ -115,7 +115,7 @@
 			AND
 		</if>
 		<if test="excelDate != null and '' != excelDate">
-			EXCEL_DATE = #{excelDate}
+			EXCEL_DATE LIKE concat("%", #{excelDate}, "%")
 		</if>
 		ORDER BY EXCEL_NAME DESC, DATE_FORMAT(EXCEL_DATE, 'yyyy-MM-dd') DESC
 	</select>

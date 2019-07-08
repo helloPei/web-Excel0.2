@@ -18,9 +18,9 @@
 	<input type="checkbox" name="isSearchMax" onclick="doState()">Occupancy Rate (max)
 	<br/>
 	<br/>
-	<form id="form_table">
-        <button onclick="doSubmit()" type="submit" class="btn btn-primary">导入</button>
-        <input id="file_excel" class="form-input" type="file" name="filename" multiple="multiple" accept=".xls,.xlsx,.csv"></input>
+	<form id="form_table" method="post" enctype="multipart/form-data">
+        <button onclick="doSubmit()" type="submit">导入</button>
+        <input id="file_excel" type="file" name="filename" multiple="multiple" accept=".xls,.xlsx,.csv"></input>
     </form>
 </div>
 <div class="table-responsive" style="margin-top: 20px">
@@ -66,18 +66,19 @@ function doSubmit(){
 		var formData = new FormData($("#form_table")[0]);
 		$.ajax({
 	        url : "doImport.do",//这里写你的url
-	        type : "POST",//post请求
+	        type : "post",//post请求
+	        dataType : "json",//这里是返回类型，一般是json,text等
+	        cache : false,//上传文件不需要缓存
 	        data : formData,
-	        // 告诉jQuery不要去设置Content-Type请求头
+	        //告诉jQuery不要去设置Content-Type请求头
 	        contentType : false,//当有文件要上传时,此项是必须的,否则后台无法识别文件流的起始位置
-	        // 告诉jQuery不要去处理发送的数据
+	        //告诉jQuery不要去处理发送的数据
 	        processData : false,//是否序列化data属性,默认true(注意：false时type必须是post)               
-	        dataType: "json",//这里是返回类型，一般是json,text等
-	        clearForm: true,//提交后是否清空表单数据
-	        //async : false,//用于控制同步和异步，默认是true
-	        success : function(result) {
+	        clearForm : true,//提交后是否清空表单数据
+	        async : false,//用于控制同步和异步，默认是true
+	        success : function(result){
 	        	if(result.state == 1){
-					window.location.href="doIndexUI.do";//重新页面加载
+	        		window.location.href = "doIndexUI.do";//重新页面加载
 				}else{
 					alert(result.message);
 				}
@@ -99,7 +100,7 @@ function checkout(){
 //单选操作
 function doChangeTHeadCheckBoxState(){
 	var flag = true;
-	$("#tbodyId input[type='checkbox']").each(function(){
+	$("#tbodyId input[type='checkbox']").each(function() {
 		flag = flag && $(this).prop("checked");
 	});
 	$("#checkAllId").prop("checked", flag);
@@ -111,14 +112,14 @@ function doChangeTBodyCheckBoxState(){
 }
 //获取去选项删除操作------------------------------------------------------------
 //删除操作
-function doDelete(){
+function doDelete() {
 	var ids = doGetCheckedIds();
-	if(ids.length == 0){
+	if(ids.length == 0) {
 		alert("请先选择");
 		return;
 	}
 	if(window.confirm("您确定要删除吗？")){
-		var params = {"excelIds":ids.toString()}
+		var params = {"excelIds" : ids.toString()}
 		var url = "doDeleteExcel.do";
 		$.post(url, params, function(result){
 			if(result.state == 1){
@@ -186,7 +187,7 @@ function doCreateIds(row){
 //页面数据自增序列号
 function autoAddNumber(){
 	function number(){
-    	for(var i=0;i< $(".numberClass").length;i++){
+    	for(var i = 0;i < $(".numberClass").length; i++){
 			$(".numberClass").get(i).innerHTML = i+1;
     	}
 	}

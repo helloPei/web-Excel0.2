@@ -25,17 +25,21 @@ import com.dave.service.ExcelService;
 
 /**
  * Excel控制层
- * @author davewpw
+ * 
+ * @author Dave
  *
  */
 @Controller
 @RequestMapping("/")
 public class ExcelController {
-	/**Excel业务层接口*/
+	/**
+	 * Excel业务层接口
+	 */
 	@Autowired
 	private ExcelService excelService;
 	/**
 	 * 主页面跳转
+	 * 
 	 * @return index.jsp
 	 */
 	@RequestMapping("doIndexUI")
@@ -44,6 +48,7 @@ public class ExcelController {
 	}
 	/**
 	 * 根据Excel ID 查询Excel内容
+	 * 
 	 * @param model
 	 * @param excelId
 	 * @return
@@ -58,6 +63,7 @@ public class ExcelController {
 	}
 	/**
 	 * 查询框功能查询所有 Excel,以及页面初始数据查询
+	 * 
 	 * @param excelDate
 	 * @param excelName
 	 * @param isSearchMax
@@ -72,6 +78,7 @@ public class ExcelController {
 	}
 	/**
 	 * 导入Excel
+	 * 
 	 * @param request
 	 * @param model
 	 * @return
@@ -112,6 +119,7 @@ public class ExcelController {
 	}
 	/**
 	 * 导出Excel
+	 * 
 	 * @param response
 	 * @param excelId
 	 */
@@ -133,6 +141,7 @@ public class ExcelController {
 	}
 	/**
 	 * 批量删除Excel
+	 * 
 	 * @param excelIds
 	 * @return
 	 */

@@ -1,7 +1,8 @@
 package com.dave.entity;
 /**
- * 暂时没使用
- * @author davewpw
+ * Excel总数
+ * 
+ * @author Dave
  *
  */
 public class ExcelTotal {

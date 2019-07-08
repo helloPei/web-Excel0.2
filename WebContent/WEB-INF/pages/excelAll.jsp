@@ -24,7 +24,7 @@
             <td>Occupancy Hour(hour)</td>
             <td>Occupancy Rate(%)</td>
         </thead>
-        <tbody>
+        <tbody id="tbodyId">
             <c:forEach var="excel" items="${excelAll}">
                 <tr class="success">
                     <td>${excel.time}</td>
@@ -48,6 +48,18 @@
 </body>
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script type="text/javascript">
+$(function(){
+	var occupancyRate = ${excel.occupancyRate};
+	var trList = $("#tbodyId").children("tr")
+	  for (var i = 0; i < trList.length; i++) {
+	    var tdArr = trList.eq(i).find("td");
+	    var tdVal = tdArr.eq(10).text();
+		if(occupancyRate+"%" == tdVal || occupancyRate+"0%" == tdVal 
+				|| occupancyRate+".00%" == tdVal) {
+			tdArr.css('background-color','#FFAE38');
+		}
+	  }
+});
 function doExport(){
 	var excelId = ${excel.excelId};
     window.location.href="doExport.do?excelId="+excelId;

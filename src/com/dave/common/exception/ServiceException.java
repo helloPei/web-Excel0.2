@@ -1,5 +1,10 @@
 package com.dave.common.exception;
-
+/**
+ * 自定义业务处理类
+ * 
+ * @author Dave
+ *
+ */
 public class ServiceException extends RuntimeException {
 	private static final long serialVersionUID = 8029523183323748146L;
 

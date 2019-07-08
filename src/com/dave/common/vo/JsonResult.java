@@ -2,12 +2,14 @@ package com.dave.common.vo;
 
 import java.io.Serializable;
 /**
- * JSON结果集实体对象
- * @author davewpw
+ * JSON处理类
+ * 
+ * @author Dave
  *
  */
 public class JsonResult implements Serializable{
 	private static final long serialVersionUID = -2040132524942880840L;
+	
 	private int state = 0;//error
 	private String message = "ok";//返回的message
 	private Object data;//返回的数据
