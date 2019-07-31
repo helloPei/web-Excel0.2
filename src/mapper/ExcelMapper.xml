@@ -1,34 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dave.dao.ExcelDao">
-	<!-- 对应数据表EXCEL_REPORT的Map属性 -->
-	<resultMap type="com.dave.entity.Excel" id="ExcelResult">
-		<id property="excelId" column="EXCEL_ID"/>
-		<result property="type" column="TYPE"/>
-		<result property="excelName" column="EXCEL_NAME"/>
-		<result property="excelDate" column="EXCEL_DATE"/>
-		<result property="week" column="WEEK"/>
-		<result property="createDate" column="CREATE_DATE"/>
-		<result property="occupancyRate" column="OCCUPANCY_RATE"/>
-	</resultMap>
-	<!-- 对应数据表EXCEL_REPORT_ALL的Map属性 -->
-	<resultMap type="com.dave.entity.ExcelAll" id="ExcelAllResult">
-		<id property="excelAllId" column="EXCELALL_ID"/>
-		<result property="excelId" column="EXCEL_ID"/>
-		<result property="time" column="TIME"/>
-		<result property="inCallAnswer" column="IN_CALL_ANSWER"/>
-		<result property="inAverageHoldingTPC" column="IN_AVERAGE_HOLDING_TPC"/>
-		<result property="outCallAnswer" column="OUT_CALL_ANSWER"/>
-		<result property="outAverageHoldingTPC" column="OUT_AVERAGE_HOLDING_TPC"/>
-		<result property="serviceCapacity" column="SERVICE_CAPACITY"/>
-		<result property="capacityNeeded" column="CAPACITY_NEEDED"/>
-		<result property="inTotalHour" column="IN_TOTAL_HOUR"/>
-		<result property="outTotalHour" column="OUT_TOTAL_HOUR"/>
-		<result property="occupancyHour" column="OCCUPANCY_HOUR"/>
-		<result property="occupancyRate" column="OCCUPANCY_RATE"/>		
-	</resultMap>
 	<!-- 根据 Excel ID 查询所有 Excel 内容 -->
-	<select id="selectExcelAll" resultMap="ExcelAllResult">
+	<select id="selectExcelAll" resultType="com.dave.entity.ExcelAll">
 		SELECT EXCELALL_ID, EXCEL_ID, TIME, IN_CALL_ANSWER, IN_AVERAGE_HOLDING_TPC
 		, OUT_CALL_ANSWER, OUT_AVERAGE_HOLDING_TPC, SERVICE_CAPACITY, CAPACITY_NEEDED 
 		, IN_TOTAL_HOUR, OUT_TOTAL_HOUR
@@ -39,7 +13,7 @@
 		WHERE EXCEL_ID = #{excelId}) ORDER BY TIME ASC
 	</select>
 	<!-- 根据 Excel ID 查询 Excel -->
-	<select id="selectExcelById" resultMap="ExcelResult">
+	<select id="selectExcelById" resultType="com.dave.entity.Excel">
 		SELECT * FROM EXCEL_REPORT WHERE EXCEL_ID = #{excelId}
 	</select>
 	<!-- 添加 Excel -->
@@ -80,7 +54,7 @@
 		, #{occupancyHour, jdbcType=VARCHAR}, #{occupancyRate, jdbcType=VARCHAR})
 	</insert>
 	<!-- 根据 Excel ID 查询 Excel内容 -->
-	<select id="selectExcelAllById" resultMap="ExcelAllResult">
+	<select id="selectExcelAllById" resultType="com.dave.entity.ExcelAll">
 		SELECT * FROM EXCEL_REPORT_ALL WHERE EXCEL_ID = #{excelId} ORDER BY TIME ASC
 	</select>
 	<!-- 根据 Excel ID 删除 Excel内容 -->
@@ -103,7 +77,7 @@
 		from EXCEL_REPORT_ALL where EXCEL_ID = #{excelId}
 	</select>
 	<!-- 根据名称查询所有 Excel -->
-	<select id="searchExcel" resultMap="ExcelResult">
+	<select id="searchExcel" resultType="com.dave.entity.Excel">
 		SELECT * FROM EXCEL_REPORT 
 		<if test="excelName != null and '' != excelName || excelDate != null and '' != excelDate">
 			WHERE 
@@ -120,7 +94,7 @@
 		ORDER BY EXCEL_NAME DESC, DATE_FORMAT(EXCEL_DATE, 'yyyy-MM-dd') DESC
 	</select>
 	<!-- 根据名称查询 Excel Occupancy Rate 的最大数 -->
-	<select id="searchExcelMax" parameterType="String" resultMap="ExcelResult">
+	<select id="searchExcelMax" parameterType="String" resultType="com.dave.entity.Excel">
 		select * from (
 		SELECT * FROM EXCEL_REPORT WHERE EXCEL_NAME 
 		LIKE concat("%", #{excelName}, "%") 
@@ -128,7 +102,7 @@
 		) e limit 1 
 	</select>
 	<!-- 根据 Excel ID 查询 Excel Occupancy Rate 的最大数的记录 -->
-	<select id="selectExcelAllMax" parameterType="int" resultMap="ExcelAllResult">
+	<select id="selectExcelAllMax" parameterType="int" resultType="com.dave.entity.ExcelAll">
 		select * from (
 		SELECT * FROM EXCEL_REPORT_All WHERE EXCEL_ID = #{excelId}
 		ORDER BY CAST(OCCUPANCY_RATE AS DECIMAL(9,2)) DESC
